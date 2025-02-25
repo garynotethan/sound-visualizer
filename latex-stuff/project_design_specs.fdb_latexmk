@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1740523811.07751 "c:/Users/huang/Documents/CSC475/sound-visualizer/latex-stuff/project_design_specs.tex" "project_design_specs.pdf" "project_design_specs" 1740523812.13126 0
+["pdflatex"] 1740524814.10265 "c:/Users/huang/Documents/CSC475/sound-visualizer/latex-stuff/project_design_specs.tex" "project_design_specs.pdf" "project_design_specs" 1740524815.07165 0
   "C:/Users/huang/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1740523703 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/huang/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1740521825 24225286 87fa89156b25d6e752782fb3f8fc1f88 ""
   "C:/Users/huang/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -70,12 +70,12 @@
   "C:/Users/huang/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/t1ptm.fd" 1585253778 817 61d7da1e9f9e74989b196d147e623736 ""
   "C:/Users/huang/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ts1ptm.fd" 1585253778 653 96f56dc5d1ef1fe1121f1cfeec70ee0c ""
   "C:/Users/huang/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "c:/Users/huang/Documents/CSC475/sound-visualizer/latex-stuff/project_design_specs.tex" 1740522963 23545 bd929b93d2f450e0a4ddfcb9541127ec ""
+  "c:/Users/huang/Documents/CSC475/sound-visualizer/latex-stuff/project_design_specs.tex" 1740524018 23543 4d9582283b630025b40cff29e0d53d5f ""
   "cc_by.pdf" 1740522510 3422 af5b27ee6bca9c0f194a55f11008b85f ""
   "cite.sty" 1740522510 26218 19edeff8cdc2bcb704e8051dc55eb5a7 ""
   "ismir.sty" 1740522547 10697 e0a113a690c86d656e1557c68724bf88 ""
-  "project_design_specs.aux" 1740523811 1646 a8f621fa23a28cfee98d4662a52a0da1 "pdflatex"
-  "project_design_specs.tex" 1740522963 23545 bd929b93d2f450e0a4ddfcb9541127ec ""
+  "project_design_specs.aux" 1740524814 1646 a8f621fa23a28cfee98d4662a52a0da1 "pdflatex"
+  "project_design_specs.tex" 1740524018 23543 4d9582283b630025b40cff29e0d53d5f ""
   (generated)
   "project_design_specs.aux"
   "project_design_specs.log"
