@@ -23,5 +23,5 @@
 
 ## User Stories
 
-1. as a user, i want to load an mp3 file so that i can see what the visualization of it looks like
+1. as a user, i want to load a wav file so that i can see what the visualization of it looks like
 2. i want to pause it 

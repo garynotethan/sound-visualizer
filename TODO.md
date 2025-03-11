@@ -5,12 +5,12 @@
 ## audio processing
 ## core
     - [ ] finalize exactly how to process the data 
-    - [ ] load an mp3
+    - [ ] load a wav
     - [ ] implement DFFT
     - [ ] send data 
 ### bonus
     - [ ] consider valence, arousal, structure, pitch as per the TAs recommendation
-    - [ ] support other sound file formats (wav, flac)
+    - [ ] support other sound file formats (mp3, flac)
 
 ## visualization
 ### core
@@ -25,7 +25,7 @@
 ## gui
 ### core
     - [x] create basic pygame window
-    - [ ] load mp3 files
+    - [ ] load wav files
     - [ ] play/pause
     - [ ] place that displays visualization
 ### bonus
