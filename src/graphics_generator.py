@@ -196,7 +196,7 @@ def run_visualizer(song_path):
 
 # Example usage
 if __name__ == "__main__":
-    run_visualizer("samples/guitarloop60bpm2.wav")
+    run_visualizer("data/5mb.wav")
 
 '''
 maybe need folder instead of 1 file lol
