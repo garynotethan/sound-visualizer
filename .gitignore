@@ -1,0 +1,7 @@
+#honestly i have no idea why i put this here lol
+#i dont even have a samples folder locally or anything
+src/samples/**.wav
+
+src/__pycache__/
+
+.idea/
