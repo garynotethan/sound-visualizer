@@ -76,9 +76,11 @@ def init_pygame(song_path, samplerate):
     py.init()
     py.mixer.init(samplerate, -16, 1, 1024)
 
+    # draw a 600x600 display
     screen = py.display.set_mode((600, 600))
     clock = py.time.Clock()
 
+    # load the song to play with the animation
     py.mixer.music.load(song_path)
 
     return screen, clock
@@ -122,33 +124,6 @@ def draw_frequency_spectrum(screen, xf, yf):
     # Draw the polygon if we have at least 3 points
     if len(points) >= 3:
         py.draw.polygon(screen, (100, 100, 255), points)
-
-
-def draw_sound_line(screen, ydata_for_line, start, y_origin):
-    """Draw the sound waveform line."""
-    last_pos = (0, 0)
-    data_length = len(ydata_for_line)
-
-    for i in range(1000):
-        # Check if the index is within the bounds of ydata_for_line
-        index = min((i + start) * 10, data_length - 1)
-
-        if index < 0:
-            index = 0
-
-        pos = (i * 6, y_origin - ydata_for_line[index] / 400)
-        py.draw.line(screen, (255, 255, 255), pos, last_pos, 1)
-        last_pos = pos
-
-    # Calculate next start position, ensuring it won't go out of bounds next iteration
-    next_start = start + int(data_length / 6000)  # More conservative increment
-
-    # If we've reached the end, reset to beginning
-    if next_start * 10 >= data_length:
-        next_start = 0
-
-    return next_start
-
 
 def run_visualizer(song_path):
     """Main function to run the audio visualizer."""
@@ -200,7 +175,6 @@ def run_visualizer(song_path):
             try:
                 # Draw visualizations
                 draw_frequency_spectrum(screen, xf, yf)
-                start = draw_sound_line(screen, ydata_for_line, start, y_origin)
 
                 # Start playing the song after first display is done
                 if not py.mixer.music.get_busy():
