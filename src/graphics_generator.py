@@ -25,7 +25,8 @@ def init_pygame(song_path, samplerate):
 def draw_frequency_spectrum(screen, xf, yf):
     """Draw the frequency spectrum visualization."""
     # Make sure we have enough data points
-    height = screen.get_height()
+    height = 300
+#    height = screen.get_height()
     width = screen.get_width() 
 
 
@@ -140,8 +141,7 @@ def run_visualizer(song_path):
 
 
 # Example usage
-if __name__ == "__main__":
-    run_visualizer("data/5mb.wav")
+
 
 '''
 maybe need folder instead of 1 file lol
