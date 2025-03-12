@@ -25,6 +25,14 @@ def init_pygame(song_path, samplerate):
 def draw_frequency_spectrum(screen, xf, yf):
     """Draw the frequency spectrum visualization."""
     # Make sure we have enough data points
+    height = screen.get_height()
+    width = screen.get_width() 
+
+
+    surface = py.Surface((width, height))
+    surface.fill((0, 0, 0))
+
+
     if len(xf) < 1000 or len(yf) < 1000:
         # Use available points or fill with zeros
         points_count = min(len(xf), len(yf), 1000)
@@ -34,32 +42,33 @@ def draw_frequency_spectrum(screen, xf, yf):
             if i < len(xf) and i < len(yf):
                 try:
                     x_val = 10 + xf[i] / 40 if not np.isnan(xf[i]) else 10
-                    y_val = 300 - yf[i] / 30000 if not np.isnan(yf[i]) else 300
+                    y_val = height - yf[i] / 30000 if not np.isnan(yf[i]) else height
                     points.append((x_val, y_val))
                 except (TypeError, ValueError):
-                    points.append((10, 300))
+                    points.append((10, height))
     else:
         # We have enough points
         try:
-            points = [(10 + xf[i] / 40, 300 - yf[i] / 30000) for i in range(1000)]
+            points = [(10 + xf[i] / 40, height - yf[i] / 30000) for i in range(1000)]
         except (TypeError, ValueError, ZeroDivisionError):
             # Fallback if calculation fails
-            points = [(10 + i, 300) for i in range(1000)]
+            points = [(10 + i, height) for i in range(1000)]
 
     # Add closing points for the polygon
     try:
         if len(xf) > 0:
-            points.append((max(xf) / 40, 300))
+            points.append((max(xf) / 40, height))
         else:
-            points.append((10, 300))
+            points.append((10, height))
     except (ValueError, TypeError):
-        points.append((10, 300))
+        points.append((10, height))
 
-    points.append((0, 300))
+    points.append((0, height))
 
     # Draw the polygon if we have at least 3 points
     if len(points) >= 3:
-        py.draw.polygon(screen, (100, 100, 255), points)
+        py.draw.polygon(surface, (100, 100, 255), points)
+    return surface
 
 def run_visualizer(song_path):
     """Main function to run the audio visualizer."""
