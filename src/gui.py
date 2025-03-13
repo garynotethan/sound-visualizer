@@ -1,4 +1,4 @@
-import pygame
+import pygame as py
 from graphics_generator import *
 
 '''
@@ -12,9 +12,32 @@ from graphics_generator import *
 
 '''
 
+def startup_menu():
+    py.init()
+    screen = py.display.set_mode((600, 600))
+    clock = py.time.Clock()
 
-def main(song_path):
 
+    while True:
+        screen.fill("black") 
+        font = py.font.Font(py.font.get_default_font(), 36) 
+        text = font.render("Drag and drop a file", True, "White")
+        text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+
+        screen.blit(text, text_rect)
+        py.display.flip()
+        for event in py.event.get():
+            if event.type == py.DROPFILE:
+                main(event.file, screen, clock)
+            elif event.type == py.QUIT:
+                py.quit()
+                return
+
+
+
+
+
+def main(song_path, screen, clock):
 
     try:
         # Load and process song data
@@ -28,7 +51,9 @@ def main(song_path):
         xf_list, yf_list = process_frequency_data(ydata, samplerate)
 
         # Initialize pygame
-        screen, clock = init_pygame(song_path, samplerate)
+        #screen, clock = init_pygame(song_path, samplerate)
+        init_pygame(song_path, samplerate)
+
 
         # Initial state
         running = True
@@ -36,6 +61,7 @@ def main(song_path):
         start = 0
         y_origin = 500
 
+        song_path = None
         # Main loop
         while running:
             screen.fill((0, 0, 0))
@@ -87,4 +113,5 @@ def main(song_path):
 
 
 if __name__ == "__main__":
-    main("data/5mb.wav")
+    startup_menu()
+#    main("data/5mb.wav")

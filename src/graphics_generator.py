@@ -9,17 +9,17 @@ DELTA = VALUES_PER_SECOND / FPS
 
 def init_pygame(song_path, samplerate):
     """Initialize pygame and load the song."""
-    py.init()
+#    py.init()
     py.mixer.init(samplerate, -16, 1, 1024)
 
     # draw a 600x600 display
-    screen = py.display.set_mode((600, 600))
-    clock = py.time.Clock()
+#    screen = py.display.set_mode((600, 600))
+#   clock = py.time.Clock()
 
     # load the song to play with the animation
     py.mixer.music.load(song_path)
 
-    return screen, clock
+#    return screen, clock
 
 
 def draw_frequency_spectrum(screen, xf, yf):
