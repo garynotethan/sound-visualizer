@@ -9,6 +9,8 @@ from scipy.io import wavfile
 import librosa
 import numpy as np
 from scipy.fft import fft, fftfreq
+import scipy.signal
+import matplotlib.pyplot as plt
 
 VALUES_PER_SECOND = 20
 
@@ -34,7 +36,11 @@ def load_song(song_path):
 
     return samplerate, duration_in_sec, num_of_channels, ydata, ydata_for_line
 
-
+def analyze_rhythm(data):
+    plt.ylabel('waveform')
+    plt.plot(data)
+    #plt.plot(scipy.signal.envelope(data)) # this is insanely slow
+    plt.show()
 
 def process_frequency_data(ydata, samplerate):
     """Process frequency data from audio samples."""
@@ -74,4 +80,3 @@ def process_frequency_data(ydata, samplerate):
             yf_list.append([0] * n)
 
     return xf_list, yf_list
-

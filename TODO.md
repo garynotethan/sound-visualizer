@@ -1,13 +1,14 @@
 ## todo list
 
-    
+
 
 ## audio processing
 ## core
-    - [ ] finalize exactly how to process the data 
+    - [ ] finalize exactly how to process the data
     - [x] load a wav
     - [x] implement DFFT
-    - [x] send data 
+    - [x] send data
+    - [ ] implement enveloping function in analyze_rhythm
 ### bonus
     - [ ] consider valence, arousal, structure, pitch as per the TAs recommendation
     - [ ] support other sound file formats (mp3, flac)
@@ -18,7 +19,7 @@
     - [x] updates at 30 fps
 ### bonus
     - [ ] visualizations are smooth
-    - [ ] visualizations are cool 
+    - [ ] visualizations are cool
     - [ ] visualization looks like how the song sounds
     - [ ] alternative visualization modes
 
@@ -39,7 +40,7 @@
 
 ## misc
 
-    - [ ] write readme 
+    - [ ] write readme
     - [ ] write setup instructions
     - [ ] write tests
     - [ ] works on multiple operating systems
