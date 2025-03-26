@@ -81,7 +81,9 @@ def main(song_path, screen, clock):
         visualization_surface = None
         # Main loop
 
-        vis_rect = pygame.Rect(50, 50, 500, 300)
+        screen_width, screen_height = screen.get_size()
+        vis_height = 400
+        vis_rect = pygame.Rect(0, 50, screen_width, vis_height)
         while running:
             screen.fill((0, 0, 0))
 
@@ -121,8 +123,11 @@ def main(song_path, screen, clock):
 
                 try:
                     # Draw visualizations
-                    visualization_surface = draw_frequency_spectrum(screen, xf, yf)
-
+                    visualization_surface = pygame.Surface((screen_width, vis_height))
+                    visualization_surface.fill((0,0,0))
+                    visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf)
+#                    pygame.draw.rect(visualization_surface, (100, 100, 100), vis_rect, 2)
+                    screen.blit(visualization_surface, vis_rect.topleft)
                     # Start playing the song after first display is done
                     '''
                     if not pygame.mixer.music.get_busy():
@@ -131,10 +136,10 @@ def main(song_path, screen, clock):
                 except Exception as e:
                     print(f"Error during visualization: {e}")
 
-                screen.blit(visualization_surface, (0, 0))
+
             
             if not playing and visualization_surface:
-                screen.blit(visualization_surface, (0, 0))
+                screen.blit(visualization_surface, vis_rect.topleft)
 
             # Update display
             clock.tick(FPS)

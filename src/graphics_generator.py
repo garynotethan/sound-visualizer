@@ -20,33 +20,37 @@ def init_pygame(song_path, samplerate):
     py.mixer.music.load(song_path)
 
 #    return screen, clock
-
-
 def draw_frequency_spectrum(screen, xf, yf):
     """Draw the frequency spectrum visualization."""
     # Make sure we have enough data points
-    height = 300
-#    height = screen.get_height()
+#    height = 300
+    height = screen.get_height()
     width = screen.get_width() 
 
+    max_y = max(yf) if max(yf) > 0 else 1
+    min_y = min(yf)
+ 
 
     surface = py.Surface((width, height))
     surface.fill((0, 0, 0))
+    #idk what below means
+#    if len(xf) < 1000 or len(yf) < 1000:
 
-
-    if len(xf) < 1000 or len(yf) < 1000:
         # Use available points or fill with zeros
-        points_count = min(len(xf), len(yf), 1000)
-        points = []
+    points_count = min(len(xf), len(yf), 1000)
+    points = []
 
-        for i in range(points_count):
-            if i < len(xf) and i < len(yf):
-                try:
-                    x_val = 10 + xf[i] / 40 if not np.isnan(xf[i]) else 10
-                    y_val = height - yf[i] / 30000 if not np.isnan(yf[i]) else height
-                    points.append((x_val, y_val))
-                except (TypeError, ValueError):
-                    points.append((10, height))
+    for i in range(points_count):
+        if i < len(xf) and i < len(yf):
+            try:
+                #x_val = 10 + xf[i] / 40 if not np.isnan(xf[i]) else 10
+                x_val = (i/points_count) * width
+                #y_val = height - (yf[i] / 30000)*height if not np.isnan(yf[i]) else height
+                y_val = height - ((yf[i] - min_y) / (max_y - min_y)) * height * 0.9
+                points.append((x_val, y_val))
+            except (TypeError, ValueError):
+                points.append((0, height))
+    '''
     else:
         # We have enough points
         try:
@@ -54,6 +58,7 @@ def draw_frequency_spectrum(screen, xf, yf):
         except (TypeError, ValueError, ZeroDivisionError):
             # Fallback if calculation fails
             points = [(10 + i, height) for i in range(1000)]
+    '''
 
     # Add closing points for the polygon
     try:
@@ -63,6 +68,7 @@ def draw_frequency_spectrum(screen, xf, yf):
             points.append((10, height))
     except (ValueError, TypeError):
         points.append((10, height))
+
 
     points.append((0, height))
 
