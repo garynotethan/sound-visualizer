@@ -23,7 +23,7 @@ def draw_button(screen, text, position, size):
 
 def startup_menu():
     pygame.init()
-    screen = pygame.display.set_mode((600, 600))
+    screen = pygame.display.set_mode((1070, 600))
     clock = pygame.time.Clock()
 
 
@@ -80,12 +80,16 @@ def main(song_path, screen, clock):
 
         visualization_surface = None
         # Main loop
+
+        vis_rect = pygame.Rect(50, 50, 500, 300)
         while running:
             screen.fill((0, 0, 0))
 
             button_text = "Pause" if playing else "Play"
             play_button = draw_button(screen, button_text, play_button_pos,
                                       play_button_size)
+            close_button = draw_button(screen, "X", (vis_rect.right - 30, vis_rect.y - 30), (30, 30))
+            minimize_button = draw_button(screen, "_", (vis_rect.right - 60, vis_rect.y - 30), (30, 30))
 
             for e in pygame.event.get():
                 if e.type == py.QUIT:
@@ -97,6 +101,10 @@ def main(song_path, screen, clock):
                         else:
                             pygame.mixer.music.unpause()
                         playing = not playing
+                    elif minimize_button.collidepoint(e.pos):
+                        pygame.display.iconify()
+                    elif close_button.collidepoint(e.pos):
+                        running = False
 
 
             # Frame count to move the visualization at the same rate the song plays
