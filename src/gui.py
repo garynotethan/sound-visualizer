@@ -11,6 +11,19 @@ from graphics_generator import *
 
 
 '''
+def draw_slider(screen, pos, size, val, min_val = 0, max_val=1);
+    '''
+    volume slider
+    '''
+    slider_rect = pygame.Rect(pos, size)
+    pygame.draw.rect(screen, (100, 100, 100), slider_rect)
+
+    handle_width = 20
+    x = pos[0] + (val - min_val) / (max_val - min_val) * (handle_width*size[0])
+    handle_rect = pygame.Rect(x, pos[1], handle_width, size[1])
+
+    pygame.draw.rect(screen, (300, 300, 300), handle_rect)
+    return slider_rect
 
 def draw_button(screen, text, position, size):
     font = pygame.font.Font(pygame.font.get_default_font(), 24)
