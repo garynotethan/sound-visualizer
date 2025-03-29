@@ -1,10 +1,5 @@
 import math
-
-import numpy as np
 import pygame as py
-from PIL.ImageChops import screen
-
-from audio_processor import *
 from constants import *
 
 
