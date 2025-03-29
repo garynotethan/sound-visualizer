@@ -1,6 +1,7 @@
 import pygame
 from graphics_generator import *
 
+
 '''
 1. handle input to give to ben
 
@@ -11,7 +12,7 @@ from graphics_generator import *
 
 
 '''
-def draw_slider(screen, pos, size, val, min_val = 0, max_val=1);
+def draw_slider(screen, pos, size, val, min_val = 0, max_val=1):
     '''
     volume slider
     '''
@@ -19,10 +20,10 @@ def draw_slider(screen, pos, size, val, min_val = 0, max_val=1);
     pygame.draw.rect(screen, (100, 100, 100), slider_rect)
 
     handle_width = 20
-    x = pos[0] + (val - min_val) / (max_val - min_val) * (handle_width*size[0])
+    x = pos[0] + (val - min_val) / (max_val - min_val) * (size[0]-handle_width)
     handle_rect = pygame.Rect(x, pos[1], handle_width, size[1])
 
-    pygame.draw.rect(screen, (300, 300, 300), handle_rect)
+    pygame.draw.rect(screen, (200, 200, 200), handle_rect)
     return slider_rect
 
 def draw_button(screen, text, position, size):
@@ -97,8 +98,16 @@ def main(song_path, screen, clock):
         screen_width, screen_height = screen.get_size()
         vis_height = 400
         vis_rect = pygame.Rect(0, 50, screen_width, vis_height)
+
+        volume = 0.5
+        volume_slider_rect = pygame.Rect(screen_width - 200, 10, 150, 20)
         while running:
             screen.fill((0, 0, 0))
+            font = pygame.font.Font(pygame.font.get_default_font(), 20)
+            
+            volume_slider_rect = draw_slider(screen, (screen_width - 200, screen_height - 75), (150, 20), volume)
+            volume_text = font.render(f"{int(volume * 100)}%", True, (255, 255, 255))
+            screen.blit(volume_text, (screen_width - 250, screen_height - 75))
 
             button_text = "Pause" if playing else "Play"
             play_button = draw_button(screen, button_text, play_button_pos,
@@ -113,6 +122,11 @@ def main(song_path, screen, clock):
                         else:
                             pygame.mixer.music.unpause()
                         playing = not playing
+                elif e.type == pygame.MOUSEMOTION:
+                    if e.buttons[0] and volume_slider_rect.collidepoint(e.pos):
+                        volume = max(0, min(1, (e.pos[0] - volume_slider_rect.x)
+                                             / volume_slider_rect.width))
+                        pygame.mixer.music.set_volume(volume) 
 
 
             # Frame count to move the visualization at the same rate the song plays
