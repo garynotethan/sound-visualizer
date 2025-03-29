@@ -1,33 +1,34 @@
 ## todo list
 
-    
+
 
 ## audio processing
 ## core
-    - [ ] finalize exactly how to process the data 
-    - [ ] load an mp3
-    - [ ] implement DFFT
-    - [ ] send data 
+    - [ ] finalize exactly how to process the data
+    - [x] load a wav
+    - [x] implement DFFT
+    - [x] send data
+    - [ ] implement enveloping function in analyze_rhythm
 ### bonus
     - [ ] consider valence, arousal, structure, pitch as per the TAs recommendation
-    - [ ] support other sound file formats (wav, flac)
+    - [ ] support other sound file formats (mp3, flac)
 
 ## visualization
 ### core
-    - [ ] make visuals
-    - [ ] updates at 30 fps
+    - [x] make visuals
+    - [x] updates at 30 fps
 ### bonus
     - [ ] visualizations are smooth
-    - [ ] visualizations are cool 
+    - [ ] visualizations are cool
     - [ ] visualization looks like how the song sounds
     - [ ] alternative visualization modes
 
 ## gui
 ### core
     - [x] create basic pygame window
-    - [ ] load mp3 files
+    - [ ] load wav files
     - [ ] play/pause
-    - [ ] place that displays visualization
+    - [x] place that displays visualization
 ### bonus
     - [ ] volume control
     - [ ] playback time
@@ -39,7 +40,7 @@
 
 ## misc
 
-    - [ ] write readme 
+    - [ ] write readme
     - [ ] write setup instructions
     - [ ] write tests
     - [ ] works on multiple operating systems
