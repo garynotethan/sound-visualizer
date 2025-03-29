@@ -38,30 +38,28 @@ def draw_frequency_spectrum(screen, xf, yf, color="BLUE"):
     surface = py.Surface((width, height))
     surface.fill((0, 0, 0))
     #idk what below means
-    # Forcing the points count to be showable across the drawn screen, avoiding overflow
-    if len(xf) < 1000 or len(yf) < 1000:
 
             # Use available points or fill with zeros
-        points_count = min(len(xf), len(yf), 1000)
-        points = []
+    points_count = min(len(xf), len(yf), 1000)
+    points = []
 
-        for i in range(points_count):
-            if i < len(xf) and i < len(yf):
-                try:
-                    #x_val = 10 + xf[i] / 40 if not np.isnan(xf[i]) else 10
-                    x_val = (i/points_count) * width
-                    #y_val = height - (yf[i] / 30000)*height if not np.isnan(yf[i]) else height
-                    y_val = height - ((yf[i] - min_y) / (max_y - min_y)) * height * 0.9
-                    points.append((x_val, y_val))
-                except (TypeError, ValueError):
-                    points.append((0, height))
-    else:
-        # We have enough points
-        try:
-            points = [(10 + xf[i] / 40, height - yf[i] / 30000) for i in range(1000)]
-        except (TypeError, ValueError, ZeroDivisionError):
-            # Fallback if calculation fails
-            points = [(10 + i, height) for i in range(1000)]
+    for i in range(points_count):
+        if i < len(xf) and i < len(yf):
+            try:
+                #x_val = 10 + xf[i] / 40 if not np.isnan(xf[i]) else 10
+                x_val = (i/points_count) * width
+                #y_val = height - (yf[i] / 30000)*height if not np.isnan(yf[i]) else height
+                y_val = height - ((yf[i] - min_y) / (max_y - min_y)) * height * 0.9
+                points.append((x_val, y_val))
+            except (TypeError, ValueError):
+                points.append((0, height))
+        else:
+            # We have enough points
+            try:
+                points = [(10 + xf[i] / 40, height - yf[i] / 30000) for i in range(1000)]
+            except (TypeError, ValueError, ZeroDivisionError):
+                # Fallback if calculation fails
+                points = [(10 + i, height) for i in range(1000)]
 
     # Add closing points for the polygon
     try:

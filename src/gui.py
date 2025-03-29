@@ -125,8 +125,8 @@ def main(song_path, screen, clock):
                     # Draw visualizations
                     visualization_surface = pygame.Surface((screen_width, vis_height))
                     visualization_surface.fill((0,0,0))
-                    # visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf)
-                    visualization_surface = draw_frequency_spectrum_circles(visualization_surface, xf, yf)
+                    visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf)
+                    # visualization_surface = draw_frequency_spectrum_circles(visualization_surface, xf, yf)
                     # visualization_surface = draw_frequency_spectrum_light_spots(visualization_surface, xf, yf)
 #                    pygame.draw.rect(visualization_surface, (100, 100, 100), vis_rect, 2)
                     screen.blit(visualization_surface, vis_rect.topleft)
