@@ -1,5 +1,6 @@
 import pygame
 from graphics_generator import *
+from audio_processor import *
 
 
 '''
@@ -185,4 +186,3 @@ def main(song_path, screen, clock):
 
 if __name__ == "__main__":
     startup_menu()
-    main("samples/guitarloop60bpm2.wav")
