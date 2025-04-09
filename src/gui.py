@@ -88,7 +88,7 @@ def main(song_path, screen, clock):
         start = 0
         y_origin = 500
 
-        play_button_pos = (0, 500)
+        play_button_pos = (30, 500)
         play_button_size = (100, 50)
 
         song_path = None
@@ -96,10 +96,12 @@ def main(song_path, screen, clock):
         visualization_surface = None
         # Main loop
 
+        #visualization 
         screen_width, screen_height = screen.get_size()
         vis_height = 400
         vis_rect = pygame.Rect(0, 50, screen_width, vis_height)
 
+        #volume slider
         volume = 0.5
         volume_slider_rect = pygame.Rect(screen_width - 200, 10, 150, 20)
         while running:
