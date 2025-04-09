@@ -88,8 +88,12 @@ def main(song_path, screen, clock):
         start = 0
         y_origin = 500
 
+
         play_button_pos = (30, 500)
         play_button_size = (100, 50)
+
+        change_mode_button_pos = (160, 500)
+        change_mode_button_size = play_button_size
 
         song_path = None
 
@@ -113,8 +117,11 @@ def main(song_path, screen, clock):
             screen.blit(volume_text, (screen_width - 250, screen_height - 75))
 
             button_text = "Pause" if playing else "Play"
+            change_mode_button_text = "Mode"
             play_button = draw_button(screen, button_text, play_button_pos,
                                       play_button_size)
+            change_mode_button = draw_button(screen, change_mode_button_text,
+                                             change_mode_button_pos, change_mode_button_size) 
             for e in pygame.event.get():
                 if e.type == py.QUIT:
                     running = False
@@ -132,6 +139,8 @@ def main(song_path, screen, clock):
                         else:
                             pygame.mixer.music.unpause()
                         playing = not playing
+                    elif change_mode_button.collidepoint(e.pos):
+                        visualization_mode = (visualization_mode + 1) % 3
                 elif e.type == pygame.MOUSEMOTION:
                     if e.buttons[0] and volume_slider_rect.collidepoint(e.pos):
                         volume = max(0, min(1, (e.pos[0] - volume_slider_rect.x)
@@ -162,9 +171,13 @@ def main(song_path, screen, clock):
                     # Draw visualizations
                     visualization_surface = pygame.Surface((screen_width, vis_height))
                     visualization_surface.fill((0,0,0))
-                    visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf)
-                    # visualization_surface = draw_frequency_spectrum_circles(visualization_surface, xf, yf)
-                    # visualization_surface = draw_frequency_spectrum_light_spots(visualization_surface, xf, yf)
+                    match visualization_mode:
+                        case 0:
+                            visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf)
+                        case 1:
+                            visualization_surface = draw_frequency_spectrum_circles(visualization_surface, xf, yf)
+                        case 2:
+                            visualization_surface = draw_frequency_spectrum_light_spots(visualization_surface, xf, yf)
 #                    pygame.draw.rect(visualization_surface, (100, 100, 100), vis_rect, 2)
                     screen.blit(visualization_surface, vis_rect.topleft)
                     # Start playing the song after first display is done
