@@ -118,6 +118,13 @@ def main(song_path, screen, clock):
             for e in pygame.event.get():
                 if e.type == py.QUIT:
                     running = False
+                elif e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_SPACE:
+                        if playing:
+                            pygame.mixer.music.pause()
+                        else:
+                            pygame.mixer.music.unpause()
+                        playing = not playing
                 elif e.type == pygame.MOUSEBUTTONDOWN:
                     if play_button.collidepoint(e.pos):
                         if playing:
