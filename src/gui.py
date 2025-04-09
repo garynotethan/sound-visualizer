@@ -104,6 +104,7 @@ def main(song_path, screen, clock):
         screen_width, screen_height = screen.get_size()
         vis_height = 400
         vis_rect = pygame.Rect(0, 50, screen_width, vis_height)
+        visualization_mode = 0
 
         #volume slider
         volume = 0.5
