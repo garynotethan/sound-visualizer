@@ -57,7 +57,15 @@ def startup_menu():
                 pygame.quit()
                 return
 
-
+def visualize(visualization_surface, xf, yf, mode):
+    match mode:
+        case 0:
+            visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf)
+        case 1:
+            visualization_surface = draw_frequency_spectrum_circles(visualization_surface, xf, yf)
+        case 2:
+            visualization_surface = draw_frequency_spectrum_light_spots(visualization_surface, xf, yf)
+    return visualization_surface
 
 
 
@@ -142,6 +150,7 @@ def main(song_path, screen, clock):
                         playing = not playing
                     elif change_mode_button.collidepoint(e.pos):
                         visualization_mode = (visualization_mode + 1) % 3
+                        visualization_surface = visualize(visualization_surface, xf, yf, visualization_mode)
                 elif e.type == pygame.MOUSEMOTION:
                     if e.buttons[0] and volume_slider_rect.collidepoint(e.pos):
                         volume = max(0, min(1, (e.pos[0] - volume_slider_rect.x)
@@ -172,13 +181,7 @@ def main(song_path, screen, clock):
                     # Draw visualizations
                     visualization_surface = pygame.Surface((screen_width, vis_height))
                     visualization_surface.fill((0,0,0))
-                    match visualization_mode:
-                        case 0:
-                            visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf)
-                        case 1:
-                            visualization_surface = draw_frequency_spectrum_circles(visualization_surface, xf, yf)
-                        case 2:
-                            visualization_surface = draw_frequency_spectrum_light_spots(visualization_surface, xf, yf)
+                    visualization_surface = visualize(visualization_surface, xf, yf, visualization_mode)
 #                    pygame.draw.rect(visualization_surface, (100, 100, 100), vis_rect, 2)
                     screen.blit(visualization_surface, vis_rect.topleft)
                     # Start playing the song after first display is done
