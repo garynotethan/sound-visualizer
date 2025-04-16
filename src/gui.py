@@ -38,6 +38,7 @@ def draw_button(screen, text, position, size):
 
 def startup_menu():
     pygame.init()
+    pygame.display.set_caption("sound-visualizer")
     screen = pygame.display.set_mode((1070, 600))
     clock = pygame.time.Clock()
 
@@ -86,20 +87,17 @@ def main(song_path, screen, clock):
         beats = [beat/samplerate for beat in beats]
         freq_changes = [freq/samplerate for freq in freq_changes]
 
-        print("huh")
         colours = list(COLOR_MAPPING.keys())
-        print("hmmmm")
         curr_colour_index = 0
         last_beat_time = 0
         last_freq_change_time = 0
-        print("???")
         curr_colour = colours[curr_colour_index]
 
-        print("yo")
 
         # Initialize pygame
         #screen, clock = init_pygame(song_path, samplerate)
         init_pygame(song_path, samplerate)
+        pygame.display.set_caption("sound visualizer")
         pygame.mixer.music.play()
 
 
@@ -121,7 +119,6 @@ def main(song_path, screen, clock):
 
         visualization_surface = None
         # Main loop
-        print("huh")
         #visualization 
         screen_width, screen_height = screen.get_size()
         vis_height = 400
