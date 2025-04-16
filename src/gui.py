@@ -1,7 +1,7 @@
 import pygame
 from graphics_generator import *
 from audio_processor import *
-
+import random
 
 '''
 1. handle input to give to ben
@@ -30,21 +30,21 @@ def draw_slider(screen, pos, size, val, min_val = 0, max_val=1):
 def draw_button(screen, text, position, size):
     font = pygame.font.Font(pygame.font.get_default_font(), 24)
     button_rect = pygame.Rect(position, size)
-    pygame.draw.rect(screen, (50, 50, 50), button_rect)  
-    text_surface = font.render(text, True, (255, 255, 255))  
+    pygame.draw.rect(screen, (50, 50, 50), button_rect)
+    text_surface = font.render(text, True, (255, 255, 255))
     text_rect = text_surface.get_rect(center=button_rect.center)
     screen.blit(text_surface, text_rect)
     return button_rect
 
 def startup_menu():
+    
     pygame.init()
     screen = pygame.display.set_mode((1070, 600))
     clock = pygame.time.Clock()
 
-
     while True:
-        screen.fill("black") 
-        font = pygame.font.Font(pygame.font.get_default_font(), 36) 
+        screen.fill("black")
+        font = pygame.font.Font(pygame.font.get_default_font(), 36)
         text = font.render("Drag and drop a file", True, "White")
         text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
 
@@ -57,12 +57,12 @@ def startup_menu():
                 pygame.quit()
                 return
 
-def visualize(visualization_surface, xf, yf, mode):
+def visualize(visualization_surface, xf, yf, mode, color):
     match mode:
         case 0:
-            visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf)
+            visualization_surface = draw_frequency_spectrum(visualization_surface, xf, yf, color=color)
         case 1:
-            visualization_surface = draw_frequency_spectrum_circles(visualization_surface, xf, yf)
+            visualization_surface = draw_frequency_spectrum_circles(visualization_surface, xf, yf, color=color)
         case 2:
             visualization_surface = draw_frequency_spectrum_light_spots(visualization_surface, xf, yf)
     return visualization_surface
@@ -74,12 +74,14 @@ def main(song_path, screen, clock):
     try:
         # Load and process song data
         samplerate, duration_in_sec, num_of_channels, ydata, ydata_for_line = load_song(song_path)
-        
 
         # Safety check
         if len(ydata) == 0 or len(ydata_for_line) == 0:
             print(f"Error: No data loaded from {song_path}")
             return
+
+        #beat_idxs = detect_beats(ydata_for_line)
+        freqshift_idxs = detect_frequency_changes(ydata_for_line)
 
         xf_list, yf_list = process_frequency_data(ydata, samplerate)
 
@@ -96,6 +98,9 @@ def main(song_path, screen, clock):
         start = 0
         y_origin = 500
 
+        colors = ["BLUE", "RED", "GREEN", "MAGENTA", "YELLOW", "ORANGE", "CYAN", "PURPLE", "TURQUOISE", "PINK"]
+        num_colors = 10
+        color_idx = 0
 
         play_button_pos = (30, 500)
         play_button_size = (100, 50)
@@ -108,7 +113,7 @@ def main(song_path, screen, clock):
         visualization_surface = None
         # Main loop
 
-        #visualization 
+        #visualization
         screen_width, screen_height = screen.get_size()
         vis_height = 400
         vis_rect = pygame.Rect(0, 50, screen_width, vis_height)
@@ -120,7 +125,7 @@ def main(song_path, screen, clock):
         while running:
             screen.fill((0, 0, 0))
             font = pygame.font.Font(pygame.font.get_default_font(), 20)
-            
+
             volume_slider_rect = draw_slider(screen, (screen_width - 200, screen_height - 75), (150, 20), volume)
             volume_text = font.render(f"{int(volume * 100)}%", True, (255, 255, 255))
             screen.blit(volume_text, (screen_width - 250, screen_height - 75))
@@ -130,7 +135,7 @@ def main(song_path, screen, clock):
             play_button = draw_button(screen, button_text, play_button_pos,
                                       play_button_size)
             change_mode_button = draw_button(screen, change_mode_button_text,
-                                             change_mode_button_pos, change_mode_button_size) 
+                                             change_mode_button_pos, change_mode_button_size)
             for e in pygame.event.get():
                 if e.type == py.QUIT:
                     running = False
@@ -150,18 +155,25 @@ def main(song_path, screen, clock):
                         playing = not playing
                     elif change_mode_button.collidepoint(e.pos):
                         visualization_mode = (visualization_mode + 1) % 3
-                        visualization_surface = visualize(visualization_surface, xf, yf, visualization_mode)
+                        visualization_surface = visualize(visualization_surface, xf, yf, visualization_mode, color=colors[color_idx])
                 elif e.type == pygame.MOUSEMOTION:
                     if e.buttons[0] and volume_slider_rect.collidepoint(e.pos):
                         volume = max(0, min(1, (e.pos[0] - volume_slider_rect.x)
                                              / volume_slider_rect.width))
-                        pygame.mixer.music.set_volume(volume) 
+                        pygame.mixer.music.set_volume(volume)
 
 
             # Frame count to move the visualization at the same rate the song plays
             if playing:
+
+                for i in freqshift_idxs:
+                    if i in range(count+1, count+DELTA+1):
+                        # change the colour randomly
+                        color_idx = random.choice([i for i in range(0,num_colors)].remove(color_idx))
+                        continue
+
                 count += DELTA
-#                count = pygame.mixer.music.get_pos() 
+#                count = pygame.mixer.music.get_pos()
 
             # Safety check for empty lists
                 if not xf_list or not yf_list:
@@ -181,7 +193,7 @@ def main(song_path, screen, clock):
                     # Draw visualizations
                     visualization_surface = pygame.Surface((screen_width, vis_height))
                     visualization_surface.fill((0,0,0))
-                    visualization_surface = visualize(visualization_surface, xf, yf, visualization_mode)
+                    visualization_surface = visualize(visualization_surface, xf, yf, visualization_mode, color=colors[color_idx])
 #                    pygame.draw.rect(visualization_surface, (100, 100, 100), vis_rect, 2)
                     screen.blit(visualization_surface, vis_rect.topleft)
                     # Start playing the song after first display is done
@@ -193,7 +205,7 @@ def main(song_path, screen, clock):
                     print(f"Error during visualization: {e}")
 
 
-            
+
             if not playing and visualization_surface:
                 screen.blit(visualization_surface, vis_rect.topleft)
 
