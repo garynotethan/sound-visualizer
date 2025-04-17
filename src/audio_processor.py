@@ -82,53 +82,6 @@ def process_frequency_data(ydata, samplerate=44100):
 
     return xf_list, yf_list
 
-# Detect beats in audio samples using energy
-"""
-Parameters:
-- samples: List of audio samples
-- sample_rate: Sampling rate in Hz (default: 44100)
-- window_size: Number of samples per analysis window (default: 1024)
-- hop_size: Number of samples between consecutive windows (default: 512)
-- sensitivity: Beat detection sensitivity (higher = fewer beats) (default: 1.3)
-Returns:
-- List of sample indices where beats were detected
-"""
-def detect_beats(samples, sample_rate=44100, window_size=1024, hop_size=512, sensitivity=1.3):
-
-    beat_idxs = []
-    avg_energy = 0.0
-    cooldown_in_frames = int(0.1 * sample_rate / hop_size)
-    init_frames = max(1, cooldown_in_frames) # Start after cooldown if cooldown comes after fill
-    energy_buffer = []
-    cooldown_counter = 0
-
-    for i in range(0, len(samples) - window_size + 1, hop_size):
-
-        window = samples[i:i+window_size]
-        energy = sum(sample**2 for sample in window) / window_size  # Normalized energy
-
-        # Initialization phase - gather energy values until there's enough to make an average
-        if len(energy_buffer) < init_frames: # If we don't have enough energy values
-            energy_buffer.append(energy) # Add the ones we just got to the buffer
-            if len(energy_buffer) >= init_frames: # If we have enough, start the average
-                avg_energy = sum(energy_buffer) / len(energy_buffer)
-            continue
-
-        # Update moving average
-        avg_energy = 0.9 * avg_energy + 0.1 * energy
-
-        # Move on to the next window if we're still in the cooldown
-        if cooldown_counter > 0:
-            cooldown_counter -= 1
-            continue
-
-        # Add beat if detected
-        if energy > avg_energy * sensitivity:
-            beat_idxs.append(i)  # Call the start of the window the start of the beat
-            cooldown_counter = cooldown_in_frames
-
-    return beat_idxs
-
 # Detect significant changes in average frequency content of audio
 """
 Parameters:
@@ -194,3 +147,50 @@ def detect_frequency_changes(samples, sample_rate=44100, window_size=2048, hop_s
             prev_avg_freq = 0.9 * prev_avg_freq + 0.1 * avg_freq # Update moving average
 
     return freqchange_idxs
+
+# Detect beats in audio samples using energy
+"""
+Parameters:
+- samples: List of audio samples
+- sample_rate: Sampling rate in Hz (default: 44100)
+- window_size: Number of samples per analysis window (default: 1024)
+- hop_size: Number of samples between consecutive windows (default: 512)
+- sensitivity: Beat detection sensitivity (higher = fewer beats) (default: 1.3)
+Returns:
+- List of sample indices where beats were detected
+"""
+def detect_beats(samples, sample_rate=44100, window_size=1024, hop_size=512, sensitivity=1.3):
+
+    beat_idxs = []
+    avg_energy = 0.0
+    cooldown_in_frames = int(0.1 * sample_rate / hop_size)
+    init_frames = max(1, cooldown_in_frames) # Start after cooldown if cooldown comes after fill
+    energy_buffer = []
+    cooldown_counter = 0
+
+    for i in range(0, len(samples) - window_size + 1, hop_size):
+
+        window = samples[i:i+window_size]
+        energy = sum(sample**2 for sample in window) / window_size  # Normalized energy
+
+        # Initialization phase - gather energy values until there's enough to make an average
+        if len(energy_buffer) < init_frames: # If we don't have enough energy values
+            energy_buffer.append(energy) # Add the ones we just got to the buffer
+            if len(energy_buffer) >= init_frames: # If we have enough, start the average
+                avg_energy = sum(energy_buffer) / len(energy_buffer)
+            continue
+
+        # Update moving average
+        avg_energy = 0.9 * avg_energy + 0.1 * energy
+
+        # Move on to the next window if we're still in the cooldown
+        if cooldown_counter > 0:
+            cooldown_counter -= 1
+            continue
+
+        # Add beat if detected
+        if energy > avg_energy * sensitivity:
+            beat_idxs.append(i)  # Call the start of the window the start of the beat
+            cooldown_counter = cooldown_in_frames
+
+    return beat_idxs
