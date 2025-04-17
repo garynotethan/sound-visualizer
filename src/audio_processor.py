@@ -4,10 +4,19 @@ import librosa
 import numpy as np
 from scipy.fft import fft, fftfreq
 
-VALUES_PER_SECOND = 20
-
 # Load and process audio data from .wav file
-def load_song(song_path):
+"""
+Parameters:
+- song_path: Path string to audio file
+- samples_per_chunk: number of samples indicating the size of the chunks the audio will be split into (default: 2000)
+Returns:
+- samplerate: The sample rate of the audio file (Hz)
+- duration_in_sec: Duration of the audio file (sec)
+- num_of_channels: Number of channels encoded into the audio file
+- ydata: A list of audio samples from the file split into chunks of length "samples_per_chunk"
+- ydata_for_line: A list of audio samples from the file
+"""
+def load_song(song_path, samples_per_chunk=2000):
 
     # Get .wav file info
     samplerate, data = wavfile.read(song_path)
@@ -22,15 +31,23 @@ def load_song(song_path):
     # Process audio data based on channels
     if num_of_channels == 1:
         ydata_for_line = list(data)
-        ydata = list(np.array_split(data, VALUES_PER_SECOND * duration_in_sec))
+        ydata = list(np.array_split(data, samplerate * duration_in_sec / samples_per_chunk))
     else:
-        ydata_for_line = list(data[:, 0])
-        ydata = list(np.array_split(data[:, 1], VALUES_PER_SECOND * duration_in_sec))
+        ydata_for_line = list(data[:, 0]) # only take first channel
+        ydata = list(np.array_split(data[:, 1], samplerate * duration_in_sec / samples_per_chunk))
 
     return samplerate, duration_in_sec, num_of_channels, ydata, ydata_for_line
 
 # Process frequency data from audio samples
-def process_frequency_data(ydata, samplerate):
+"""
+Parameters:
+- ydata: List of chunks of audio samples
+- sample_rate: Sampling rate in Hz (default: 44100)
+Returns:
+- xf_list: List of chunks of samples frequencies
+- yf_list: List of chunks of values for sampled frequencies
+"""
+def process_frequency_data(ydata, samplerate=44100):
 
     xf_list = []
     yf_list = []
